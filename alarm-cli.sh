@@ -116,8 +116,10 @@ timer () {
 		echo "seconds: (default is 0)"
 		read seconds
 		if [ -z "$seconds" ]; then seconds=0; fi
-		echo "do you want the volume to automatically adjust to 100%? [y/n/default=n]"
-		read response0
+		if [[ "$maxvolume" == 0 ]]; then
+			echo "do you want the volume to automatically adjust to 100%? [y/n/default=n]"
+			read response0
+		fi
 		if [ "$response0" = "y" ]; then maxvolume=1; fi
 	fi
 }
