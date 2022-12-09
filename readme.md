@@ -22,13 +22,13 @@
 ## how to use
 mkdir alarm
 
-put script in the alarm directory
+cd alarm && wget https://raw.githubusercontent.com/FunForNow/alarm-cli.sh/main/alarm-cli.sh
 
-create a directory inside alarm called audio
+mkdir audio
 
 place an audio file(s) inside the alarm/audio/ 
 
 ### examples
 
 #### bash alarm-cli.sh -m -a ~/Music/ -l 5:30:0
-#### bash alarm-cli.sh  
+#### bash alarm-cli.sh 
