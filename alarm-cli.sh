@@ -38,30 +38,25 @@ playfile () {
         cvlc "$audiofile"
 }
 maximizevolume () {
-        rawvolume=$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}')
-        #100%
-        #
+        #initial variables
+	#
+	rawvolume=$(pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}')
         volume=${rawvolume::"${#rawvolume}"-1}
-        #100
-        #
-        #increase by this value
-        #
         increaseby=$(( 100 - "$volume"))
         #only increase if called for
         #
+	
         increaseit="0"
-        #if the volume is somehow currently negative, increase it anyway
         #if the volume is normal and not 100, increase it by $increaseby
         #
-        if [[ "$increaseby" -gt 101 ]]; then
-                #do the thing
-                increaseit="1"
-        fi
-        if [[ "$increaseby" -eq 0 ]]; then
-                #do the thing
-                increaseit="1"
-        fi
-
+	#ignore negative volumes, dont raise past 100%, and dont raise by 0
+        if [[ "$increaseby" -lt 101 ]]; then
+                #dont raise by 0
+                if [[ "$increaseby" -gt 0 ]]; then 
+			increaseit="1" 
+		fi
+	fi
+        
         #unmute just in case
         #
         pactl set-sink-mute @DEFAULT_SINK@ 0
