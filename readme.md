@@ -1,5 +1,8 @@
 # alarm-cli.sh
 
+## disclaimer
+this script is rough. Use at your own caution. 
+
 ## requires
 - vlc
 - awk
