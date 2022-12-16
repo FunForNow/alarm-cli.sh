@@ -18,14 +18,6 @@ daysinseconds=0
 notISOorDOW=1
 
 #options
-#
-#       -m : make the volume 100% if not already equal to or greater than
-#
-#       -t : pass the argument hh:mm:ss
-#
-#       -a : pass the audio file/directory
-#
-#       -i : handle more input
 #handle flags
 while getopts "va:t:i:dh:m:s:" flag
 do
