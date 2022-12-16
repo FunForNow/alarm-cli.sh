@@ -20,23 +20,33 @@ use at your own caution - OR - grab the ideas you like and make your own script.
 #### basic alarms and timers
 timers: 
 
-      bash alarm-cli.sh -t 1                    (1 sec)
+      bash alarm-cli.sh -t 1                                (1 sec)
 
-      bash alarm-cli.sh -t 1:1                  (61 sec)
+      bash alarm-cli.sh -t 1:1                              (61 sec)
 
-      bash alarm-cli.sh -t 1:1:1                (3661 sec)
+      bash alarm-cli.sh -t 1:1:1                            (3661 sec)
             
-      bash alarm-cli.sh -h 1 -m 1 -s 1          (3661 sec)
+      bash alarm-cli.sh -h 1 -m 1 -s 1                      (3661 sec)
 
 alarms:
 
-      bash alarm-cli.sh -i 2pm                  (nearest 2pm)
+      bash alarm-cli.sh -i 2pm                              (nearest 2pm)
       
-      bash alarm-cli.sh -i tue@2pm              (nearest tuesday at 2pm)
+      bash alarm-cli.sh -i tue@2pm                          (nearest tuesday at 2pm)
 
-      bash alarm-cli.sh -i 11/11@11:11:11pm     (nearest 11/11 at 11:11:11pm)
+      bash alarm-cli.sh -i 11/11@11:11:11pm                 (nearest 11/11 at 11:11:11pm)
       
-      bash alarm-cli.sh -i tomorrow@6am         (tomorrow at 6am)
+      bash alarm-cli.sh -i tomorrow@6am                     (tomorrow at 6am)
+      
+other:
+
+      bash alarm-cli.sh -i tomorrow@6am -v                  (maximize volume before playing alarm)
+      
+      bash alarm-cli.sh -i tomorrow@6am -d                  (show output without playing alarm)
+      
+      bash alarm-cli.sh -i tomorrow@6am -a ~/Music          (play random song from Music directory)
+
+      
       
 ## options
 -t  
