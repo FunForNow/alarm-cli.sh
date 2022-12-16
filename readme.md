@@ -1,37 +1,114 @@
 # alarm-cli.sh
 
 ## disclaimer
-this script is rough. Use at your own caution. 
+I might have tuned the script, but it's still a bash script.
+
+use at your own caution - OR - grab the ideas you like and make your own script. 
 
 ## requires
 - vlc
+
 - awk
-- pipewire (-m flag turns the volume to %100)
 
+- date (unix command)
+
+- grep
+
+- pactl
+
+## examples
+#### basic alarms and timers
+timers: 
+
+      bash alarm-cli.sh -t 1                    (1 sec)
+
+      bash alarm-cli.sh -t 1:1                  (61 sec)
+
+      bash alarm-cli.sh -t 1:1:1                (3661 sec)
+            
+      bash alarm-cli.sh -h 1 -m 1 -s 1          (3661 sec)
+
+alarms:
+
+      bash alarm-cli.sh -i 2pm                  (nearest 2pm)
+      
+      bash alarm-cli.sh -i tue@2pm              (nearest tuesday at 2pm)
+
+      bash alarm-cli.sh -i 11/11@11:11:11pm     (nearest 11/11 at 11:11:11pm)
+      
+      bash alarm-cli.sh -i tomorrow@6am         (tomorrow at 6am)
+      
 ## options
--l  : pass a timer string without interactive 
+-t  
+
+      -t : timer 
       
-      syntax: hours:minutes:seconds
+      syntax: 
+            
+            hours:minutes:seconds
+            
+            minutes:seconds
+            
+            seconds
 
--a  : point directly to the file/folder you want to source audio from.
+-i  
+
+      -i : "moreinput"
       
-      syntax: it's not picky
+      this uses the date command where it can and patches known issues
       
-      folders: uses cvlc -Z to randomly choose a file
+      to be perfectly clear, I dont know what all you can do with it.
       
--m  : automatically increases the volume to 100% right before playing the audio file
+      There are probably inputs I dont even know exist yet
       
+-d
 
-## how to use
-mkdir alarm
+      -d : debug
+      
+      run it to determine output AND don't execute the sleep or audio
+      
+-v
 
-cd alarm && wget https://raw.githubusercontent.com/FunForNow/alarm-cli.sh/main/alarm-cli.sh
+      -v  : automatically increases the volume to 100% right before playing the audio file
+      
+      this uses the pactl, but so as to work with pipewire. 
+      
+      may or may not work for you.
 
-mkdir audio
+-a
 
-place an audio file(s) inside the alarm/audio/ 
+      -a : alarm-audio-file(s)
+      
+      pick a specifc file or directory instead of the default
+      
+      it morphs bad requests so all requests should function
+      
+      SHOULD. it's completely possible that you can break this in ways I couldn't think of
+      
+-h,m,s
 
-### examples
+      -h : hours
+      
+      set the number of hours for timer 
+      
+      -m : minutes
+      
+      set number of minutes for timer
+      
+      -s : seconds
+      
+      set number of seconds for timer
+    
+## Future Features
 
-#### bash alarm-cli.sh -m -a ~/Music/ -l 5:30:0
-#### bash alarm-cli.sh 
+#### Cronjobber       
+makes this script capable of launching and managing multiple alarms with the help of cron
+
+#### MasterWaiter     
+manages cronjobber, kills old alarms, prevents chaos, reduces resource usage organizationally
+
+#### LaunchInWindow:   
+launch gnome-terminal window for just the alarm. I will probably include a qt window as an alternative 
+
+#### Snooze:
+it snoozes the alarm. Not much to say here
