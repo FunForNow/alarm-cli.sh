@@ -53,16 +53,21 @@ other:
       bash alarm-cli.sh -i tomorrow@6am -d                  (show output without playing alarm)
       
       bash alarm-cli.sh -i tomorrow@6am -a ~/Music          (play random song from Music directory)
+      
+      
 
 things that work that I didn't prepare for or dont understand:
 
       bash alarm-cli.sh -i "2 weeks"                        (quotations required)
       
-      bash alarm-cli.sh -i "2 weeks"@2am
+      bash alarm-cli.sh -i "2 weeks"@2am                    (quotations required)
+      
+      
 
 things that dont work that the above makes you curious about:
       
-      bash alarm-cli.sh -i "3 months"                        (quotations required)
+      bash alarm-cli.sh -i "3 months"                        
+
 
       
 ## options
