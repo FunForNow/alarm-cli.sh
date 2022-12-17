@@ -44,6 +44,8 @@ alarms:
       
       bash alarm-cli.sh -i tomorrow                         (first second of tomorrow)
 
+      bash alarm-cli.sh -i "2 weeks"                        (apparently, this actually works)
+
 
       
 other:
