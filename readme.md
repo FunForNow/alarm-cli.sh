@@ -5,6 +5,8 @@ I might have tuned the script, but it's still a bash script.
 
 use at your own caution - OR - grab the ideas you like and make your own script. 
 
+code is currently spaghetti. code will be a ceaser salad before new year
+
 ## requires
 - vlc
 
