@@ -16,8 +16,17 @@ minutes=0
 seconds=0
 daysinseconds=0
 notISOorDOW=1
+notadow=1
 
 #options
+#
+#       -m : make the volume 100% if not already equal to or greater than
+#
+#       -t : pass the argument hh:mm:ss
+#
+#       -a : pass the audio file/directory
+#
+#       -i : handle more input
 #handle flags
 while getopts "va:t:i:dh:m:s:" flag
 do
@@ -115,7 +124,7 @@ maximizevolume () {
         #
         if [[ "$increaseit" -eq 1 ]]; then
                 pactl set-sink-volume @DEFAULT_SINK@ +"$increaseby"%
-#                echo "volume is now $(pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}')"
+#               echo "volume is now $(pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}')"
         fi
 }
 
@@ -125,7 +134,7 @@ playalarm () {
 		echo "expected alarm at "$(date -d "${totalsecs} sec")
 		exit
 	fi
-	echo "expected alarm at "$(date -d "${totalsecs} sec")
+#	echo "expected alarm at "$(date -d "${totalsecs} sec")
 	sleep "$totalsecs"
 	if [[ "$maxvolume" == 1 ]]; then
                 maximizevolume;
@@ -243,7 +252,7 @@ findtheISOseconds () {
 		if [[ $(date +%j -d "${datestring}") -lt $(date +%j) ]]; then
 			appendyear=$(( $(date +%Y) + 1 ))
 			if [[ $(date +%Y -d "$datestring") -lt $(date +%Y) ]]; then
-#				echo "error: this year is from the past"
+				echo "error: this year is from the past"
 				exit;
 			fi
 			datestring="$appendyear""/""$datestring"
@@ -271,7 +280,7 @@ findthedateseconds () {
 
                         #if it succeeds, then it is a day of the week
                         if [[ $( grep "$item" <<< "$datestring") ]]; then
-#                                echo "findthedowseconds ();"
+#                               echo "findthedowseconds ();"
 				datestring="$item"
                                 findthedowseconds;
                                 #returns days till target
@@ -302,14 +311,13 @@ moreinput () {
         if [[ "$datestringraw" == *"@"* ]]; then
                 #this has a days and time segment
                 #determine if it is ISO or dow (day of week)
-#                echo "this has day and time segments"
+#               echo "this has day and time segments"
                 #find the days until target date and calculate seconds
-#                echo "findthedateseconds ();"
+#               echo "findthedateseconds ();"
 		findthedateseconds;
 		#find the seconds until the target time
 #		echo "findthetimeseconds ();"
                 findthetimeseconds;
-
 		totalsecs=$(( "$secondstilltarget" + "$daysinseconds" ))
                 if [[ "$daysinseconds" == 0 ]]; then
 			totalsecs=$(( "$secondstilltarget" - "$secondssince" ))
@@ -322,9 +330,47 @@ moreinput () {
 	#it isn't a date@time request, so...
         elif [[ "$datestringraw" == *"am"* ]] || [[ "$datestringraw" == *"pm"* ]]; then
                 #this passes if there is no days segment and it is only time
-#                echo "findthesoleseconds ();"
+#		echo "findthesoleseconds ();"
 		#find the seconds until the target time
                 findthesoleseconds;
+	else
+#		echo "it has no @, but it might be dow or ISO"
+#		echo "datestring is: ""$datestringraw"
+                for item in "${daysoftheweek[@]}"; do
+
+	                if [[ $( grep "$item" <<< "$datestringraw") ]]; then
+#		                echo "findthedowseconds ();"
+                	        datestring="$item"
+	                        findthedowseconds;
+        	                #returns days till target
+                	        #set totalsecs and it works
+                        	totalsecs=$(( "$secondstilltarget" + "$daysinseconds" ))
+				#but what if it's not a dow either?
+				notadow=0
+				#at this point i'm starting to realize i need to loop through the
+				#fields to identify their properties
+	                fi
+		done
+		if [[ "$notadow" == 1 ]]; then
+			#maybe its ISO
+#			echo "its not a dow..."
+		        if [[ "$datestringraw" == *"/"* ]]; then
+		                #its an ISO date format
+				#datestringraw isn't setting datestring, so do it here
+				datestring="$datestringraw"
+#               		echo "findtheisoseconds ();"
+        	        	findtheISOseconds;
+                                totalsecs=$(( "$secondstilltarget" + "$daysinseconds" ))
+			else
+				#hail mary...
+#				echo "i dont know. hail mary time"
+				daysinseconds=$(( $(date +%s -d "${datestringraw} 00:00") - $(date +%s) ))
+#				echo "hail mary: ""$daysinseconds"
+				#if the number is negative, we already passed it
+				if [[ "$daysinseconds" -lt 0 ]]; then daysinseconds=0; fi
+				totalsecs=$(( "$secondstilltarget" + "$daysinseconds" ))
+			fi
+		fi
         fi
 }
 
@@ -332,6 +378,7 @@ moreinput () {
 setalarm () {
 #create a catch to prevent the command from continuing if the params are incorrect
         if [[ "$inputI" == 1 ]]; then
+#               echo "more input..."
                 moreinput;
 		if [[ "$inputT" == 1 ]]; then
 			echo "error: use either -t or -i"
@@ -361,4 +408,3 @@ main () {
 }
 
 main;
-
