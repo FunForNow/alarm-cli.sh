@@ -38,6 +38,12 @@ alarms:
       
       bash alarm-cli.sh -i tomorrow@6am                     (tomorrow at 6am)
       
+      bash alarm-cli.sh -i 12/25                            (first second of christmas day)
+      
+      bash alarm-cli.sh -i tomorrow                         (first second of tomorrow)
+
+
+      
 other:
 
       bash alarm-cli.sh -i tomorrow@6am -v                  (maximize volume before playing alarm)
